@@ -67,7 +67,7 @@ migrate -path database/migration/ -database "postgresql://username:secretkey@loc
 
 ## API Documentation
 
-We leverage [swaggo/swag](https://github.com/swaggo/swag) for our API documentation.
+We leverage [swaggo/swag](https://github.com/swaggo/swag) for our API documentation.  The Swagger documentation is accessible at the following path: `http://localhost:8080/docs/index.html`.
 
 ### Installation
 

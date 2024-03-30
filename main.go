@@ -16,7 +16,7 @@ import (
 // @description     This is a sample server celler server.
 
 // @host      		localhost:8080
-// @BasePath  		/api/v1
+// @BasePath  		/api
 func main() {
 	// Connect to PostgreSQL database
 	db, err := sql.Open("postgres", "postgres://postgres:password@localhost:5432/golang-testing?sslmode=disable")

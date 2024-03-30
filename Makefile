@@ -1,4 +1,5 @@
 start:
+	swag init
 	go run .
 
 migration_up: 

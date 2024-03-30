@@ -1,9 +1,80 @@
-basePath: /api/v1
+basePath: /api
+definitions:
+  modal.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      updatedAt:
+        type: string
+      username:
+        type: string
+      valid:
+        type: boolean
+    type: object
 host: localhost:8080
 info:
   contact: {}
   description: This is a sample server celler server.
   title: Golang Testing POC API
   version: "1.0"
-paths: {}
+paths:
+  /user:
+    get:
+      description: Get a list of users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/modal.User'
+            type: array
+      summary: Get user list
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the input payload
+      parameters:
+      - description: User object that needs to be created
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/modal.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/modal.User'
+      summary: Create a new user
+      tags:
+      - Users
+  /user/{id}:
+    get:
+      description: Get a single user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/modal.User'
+      summary: Get user by ID
+      tags:
+      - Users
 swagger: "2.0"
