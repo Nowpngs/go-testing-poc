@@ -1,11 +1,11 @@
 package user
 
 import (
-	"encoding/json"
-	"fmt"
 	modal "go-testing-poc/pkg/user"
 	"go-testing-poc/pkg/user/service"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type UserHandler struct {
@@ -16,34 +16,28 @@ func NewUserHandler(userService service.UserService) *UserHandler {
 	return &UserHandler{userService: userService}
 }
 
-func (h *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) CreateUserHandler(c *gin.Context) {
 	var newUser modal.User
-	err := json.NewDecoder(r.Body).Decode(&newUser)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "error decoding request body: %v", err)
+	if err := c.ShouldBindJSON(&newUser); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err = h.userService.CreateUser(r.Context(), &newUser)
+	err := h.userService.CreateUser(c.Request.Context(), &newUser)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "error creating user: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(newUser)
+	c.JSON(http.StatusCreated, newUser)
 }
 
-func (h *UserHandler) GetUserListHandler(w http.ResponseWriter, r *http.Request) {
-	users, err := h.userService.GetUserList(r.Context())
+func (h *UserHandler) GetUserListHandler(c *gin.Context) {
+	users, err := h.userService.GetUserList(c.Request.Context())
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "error fetching user list: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(users)
+	c.JSON(http.StatusOK, users)
 }
