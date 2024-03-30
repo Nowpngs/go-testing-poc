@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	server "go-testing-poc/internal/api/http/server"
+	config "go-testing-poc/internal/config"
 	"log"
 	"net/http"
 
@@ -18,8 +19,11 @@ import (
 // @host      		localhost:8080
 // @BasePath  		/api
 func main() {
-	// Connect to PostgreSQL database
-	db, err := sql.Open("postgres", "postgres://postgres:password@localhost:5432/golang-testing?sslmode=disable")
+	// Load the configuration
+	cfg := config.NewConfig()
+
+	// Connect to the database
+	db, err := sql.Open("postgres", cfg.DBURI())
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
@@ -32,7 +36,7 @@ func main() {
 	log.Println("Successfully connected to the database")
 
 	// Pass the database connection to your server
-	router := server.NewRouter(db)
+	router := server.NewRouter(db, cfg)
 
 	log.Println("Starting server on port 8080...")
 	if err := http.ListenAndServe(":8080", router); err != nil {
