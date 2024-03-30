@@ -2,14 +2,21 @@ package main
 
 import (
 	"database/sql"
+	server "go-testing-poc/internal/api/http/server"
 	"log"
 	"net/http"
 
-	server "go-testing-poc/internal/api/http/server"
+	_ "go-testing-poc/docs"
 
 	_ "github.com/lib/pq"
 )
 
+// @title 			Golang Testing POC API
+// @version         1.0
+// @description     This is a sample server celler server.
+
+// @host      		localhost:8080
+// @BasePath  		/api/v1
 func main() {
 	// Connect to PostgreSQL database
 	db, err := sql.Open("postgres", "postgres://postgres:password@localhost:5432/golang-testing?sslmode=disable")

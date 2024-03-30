@@ -28,7 +28,7 @@ docker-compose up -d postgres
 Then, execute the following command to start the server:
 
 ```bash
-go run cmd/app/main.go
+go run .
 ```
 
 ## Database Migration
@@ -64,6 +64,28 @@ After creating a migration, it needs to be applied to the database to enact the 
 ```bash
 migrate -path database/migration/ -database "postgresql://username:secretkey@localhost:5432/database_name?sslmode=disable" -verbose up
 ```
+
+## API Documentation
+
+We leverage [swaggo/swag](https://github.com/swaggo/swag) for our API documentation.
+
+### Installation
+
+You can install the tool using the following command:
+
+```bash
+go install github.com/swaggo/swag/cmd/swag@latest
+```
+
+### Updating API Description
+
+To update the API description, execute the following command at the root directory:
+
+```bash
+swag init
+```
+
+This command will generate or update the API documentation based on the comments in your Go code. Make sure to annotate your code appropriately for swaggo to parse and generate the documentation correctly.
 
 ## License
 
