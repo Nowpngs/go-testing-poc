@@ -25,6 +25,7 @@ func NewRouter(db *sql.DB) *gin.Engine {
 	{
 		userRoutes.POST("/", userHandler.CreateUserHandler)
 		userRoutes.GET("/", userHandler.GetUserListHandler)
+		userRoutes.GET("/:id", userHandler.GetUserByIdHandler)
 	}
 
 	return router
