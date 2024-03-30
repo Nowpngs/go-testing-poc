@@ -25,7 +25,7 @@ func main() {
 	log.Println("Successfully connected to the database")
 
 	// Pass the database connection to your server
-    router := server.NewRouter(db)
+	router := server.NewRouter(db)
 
 	log.Println("Starting server on port 8080...")
 	if err := http.ListenAndServe(":8080", router); err != nil {

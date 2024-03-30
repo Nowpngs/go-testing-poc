@@ -6,5 +6,5 @@ type AbstractModal struct {
 	ID        int
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Valid bool
+	Valid     bool
 }
