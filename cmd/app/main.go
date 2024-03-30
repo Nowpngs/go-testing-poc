@@ -2,9 +2,10 @@ package main
 
 import (
 	"database/sql"
-	"go-testing-poc/internal/api/http/server"
 	"log"
 	"net/http"
+
+	server "go-testing-poc/internal/api/http/server"
 
 	_ "github.com/lib/pq"
 )
