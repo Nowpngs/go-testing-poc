@@ -7,6 +7,7 @@ This repository serves as a proof of concept for testing the implementation of a
 ## Prerequisites
 
 Ensure you have Go installed on your system. You can download and install it from the [official Go website](https://golang.org/).
+Also, make sure you have Docker and Docker Compose installed.
 
 ## Usage
 
@@ -16,6 +17,12 @@ Navigate to the root directory of the project in your terminal:
 
 ```bash
 cd {{ root_path }}
+```
+
+(Optional) Starting the PostgreSQL server:
+
+```bash
+docker-compose up -d postgres
 ```
 
 Then, execute the following command to start the server:
