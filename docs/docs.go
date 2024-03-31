@@ -25,6 +25,14 @@ const docTemplate = `{
                     "Users"
                 ],
                 "summary": "Get user list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Role ID",
+                        "name": "role",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -101,6 +109,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "modal.Role": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "AdminRole",
+                "UserRole"
+            ]
+        },
         "modal.User": {
             "type": "object",
             "properties": {
@@ -112,6 +131,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "role": {
+                    "$ref": "#/definitions/modal.Role"
                 },
                 "updatedAt": {
                     "type": "string"

@@ -1,5 +1,13 @@
 basePath: /api
 definitions:
+  modal.Role:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - AdminRole
+    - UserRole
   modal.User:
     properties:
       createdAt:
@@ -8,6 +16,8 @@ definitions:
         type: string
       id:
         type: integer
+      role:
+        $ref: '#/definitions/modal.Role'
       updatedAt:
         type: string
       username:
@@ -25,6 +35,11 @@ paths:
   /user:
     get:
       description: Get a list of users
+      parameters:
+      - description: Role ID
+        in: query
+        name: role
+        type: string
       produces:
       - application/json
       responses:

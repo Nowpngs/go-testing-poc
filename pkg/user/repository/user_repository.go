@@ -8,7 +8,7 @@ import (
 
 type UserRepository interface {
 	CreateUser(ctx context.Context, user *modal.User) error
-	GetUserList(ctx context.Context) ([]*modal.User, error)
+	GetUserList(ctx context.Context, role *modal.Role) ([]*modal.User, error)
 	GetUserById(ctx context.Context, id string) (*modal.User, error)
 }
 
@@ -28,8 +28,16 @@ func (r *userRepository) CreateUser(ctx context.Context, user *modal.User) error
 	return nil
 }
 
-func (r *userRepository) GetUserList(ctx context.Context) ([]*modal.User, error) {
-	rows, err := r.db.QueryContext(ctx, "SELECT id, username, email, created_at, updated_at, valid FROM users")
+func (r *userRepository) GetUserList(ctx context.Context, role *modal.Role) ([]*modal.User, error) {
+	query := "SELECT id, username, email, created_at, updated_at, valid FROM users"
+	var args []interface{}
+
+	if role != nil {
+		query += " WHERE role = $1"
+		args = append(args, *role)
+	}
+
+	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}

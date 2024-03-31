@@ -4,6 +4,7 @@ import (
 	modal "go-testing-poc/pkg/user"
 	"go-testing-poc/pkg/user/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,12 +45,25 @@ func (h *UserHandler) CreateUserHandler(c *gin.Context) {
 // GetUserList godoc
 // @Summary Get user list
 // @Description Get a list of users
+// @Param role query string false "Role ID"
 // @Produce  json
 // @Tags Users
 // @Success 200 {array} modal.User
 // @Router /user [get]
 func (h *UserHandler) GetUserListHandler(c *gin.Context) {
-	users, err := h.userService.GetUserList(c.Request.Context())
+	roleStr := c.Query("role")
+	var role *modal.Role
+
+	if roleStr != "" {
+		if roleID, err := strconv.Atoi(roleStr); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid role ID"})
+			return
+		} else {
+			role = (*modal.Role)(&roleID)
+		}
+	}
+
+	users, err := h.userService.GetUserList(c.Request.Context(), role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
