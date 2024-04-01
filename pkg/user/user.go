@@ -7,8 +7,8 @@ import (
 type Role int
 
 const (
-	AdminRole Role = iota
-	UserRole
+	UserRole Role = iota + 1
+	AdminRole
 )
 
 type User struct {

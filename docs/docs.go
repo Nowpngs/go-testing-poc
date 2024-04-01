@@ -121,7 +121,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modal.User"
+                            "$ref": "#/definitions/dto.UserCreateRequest"
                         }
                     }
                 ],
@@ -202,6 +202,24 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.UserCreateRequest": {
+            "type": "object",
+            "required": [
+                "role",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "$ref": "#/definitions/modal.Role"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.UserResponse": {
             "type": "object",
             "properties": {
@@ -248,12 +266,12 @@ const docTemplate = `{
         "modal.Role": {
             "type": "integer",
             "enum": [
-                0,
-                1
+                1,
+                2
             ],
             "x-enum-varnames": [
-                "AdminRole",
-                "UserRole"
+                "UserRole",
+                "AdminRole"
             ]
         },
         "modal.Status": {

@@ -2,6 +2,7 @@ package user
 
 import (
 	userModal "go-testing-poc/pkg/user"
+	userDto "go-testing-poc/pkg/user/dto"
 	userService "go-testing-poc/pkg/user/service"
 	"net/http"
 	"strconv"
@@ -22,15 +23,21 @@ func NewUserHandler(userService userService.UserService) *UserHandler {
 // @Description Create a new user with the input payload
 // @Tags Users
 // @Accept  json
-// @Param user body userModal.User true "User object that needs to be created"
+// @Param user body userDto.UserCreateRequest true "User object that needs to be created"
 // @Produce  json
 // @Success 201 {object} userModal.User
 // @Router /user [post]
 func (h *UserHandler) CreateUserHandler(c *gin.Context) {
-	var newUser userModal.User
-	if err := c.ShouldBindJSON(&newUser); err != nil {
+	var userRequest userDto.UserCreateRequest
+	if err := c.BindJSON(&userRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	newUser := userModal.User{
+		Username: userRequest.Username,
+		Email:    userRequest.Email,
+		Role:     userRequest.Role,
 	}
 
 	err := h.userService.CreateUser(c.Request.Context(), &newUser)

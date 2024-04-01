@@ -24,6 +24,18 @@ definitions:
       user:
         $ref: '#/definitions/dto.UserResponse'
     type: object
+  dto.UserCreateRequest:
+    properties:
+      email:
+        type: string
+      role:
+        $ref: '#/definitions/modal.Role'
+      username:
+        type: string
+    required:
+    - role
+    - username
+    type: object
   dto.UserResponse:
     properties:
       email:
@@ -54,12 +66,12 @@ definitions:
     type: object
   modal.Role:
     enum:
-    - 0
     - 1
+    - 2
     type: integer
     x-enum-varnames:
-    - AdminRole
     - UserRole
+    - AdminRole
   modal.Status:
     enum:
     - 1
@@ -161,7 +173,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/modal.User'
+          $ref: '#/definitions/dto.UserCreateRequest'
       produces:
       - application/json
       responses:
