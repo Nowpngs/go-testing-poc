@@ -2,10 +2,13 @@ package server
 
 import (
 	"database/sql"
+	"go-testing-poc/internal/api/http/booking"
 	"go-testing-poc/internal/api/http/user"
 	"go-testing-poc/internal/config"
-	"go-testing-poc/pkg/user/repository"
-	"go-testing-poc/pkg/user/service"
+	bookingRepo "go-testing-poc/pkg/booking/repository"
+	bookingService "go-testing-poc/pkg/booking/service"
+	userRepo "go-testing-poc/pkg/user/repository"
+	userService "go-testing-poc/pkg/user/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,13 +23,16 @@ func NewRouter(db *sql.DB, cfg *config.Config) *gin.Engine {
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Init Repositories
-	userRepo := repository.NewUserRepository(db)
+	userRepo := userRepo.NewUserRepository(db)
+	bookingRepo := bookingRepo.NewBookingRepository(db)
 
 	// Init Services
-	userService := service.NewUserService(userRepo)
+	userService := userService.NewUserService(userRepo)
+	bookingService := bookingService.NewBookingService(bookingRepo)
 
 	// Init Handlers
 	userHandler := user.NewUserHandler(userService)
+	bookingHandler := booking.NewBookingHandler(bookingService)
 
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello, World!")
@@ -35,9 +41,14 @@ func NewRouter(db *sql.DB, cfg *config.Config) *gin.Engine {
 	// Routes
 	userRoutes := router.Group("/user")
 	{
-		userRoutes.POST("/", userHandler.CreateUserHandler)
-		userRoutes.GET("/", userHandler.GetUserListHandler)
+		userRoutes.POST("", userHandler.CreateUserHandler)
+		userRoutes.GET("", userHandler.GetUserListHandler)
 		userRoutes.GET("/:id", userHandler.GetUserByIdHandler)
+	}
+	bookingRoutes := router.Group("/booking")
+	{
+		bookingRoutes.POST("", bookingHandler.CreateBookingHandler)
+		bookingRoutes.GET("user", bookingHandler.GetBookingWithUserListHandler)
 	}
 
 	return router

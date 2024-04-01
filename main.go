@@ -17,7 +17,7 @@ import (
 // @description     This is a sample server celler server.
 
 // @host      		localhost:8080
-// @BasePath  		/api
+// @BasePath  		/
 func main() {
 	// Load the configuration
 	cfg := config.NewConfig()

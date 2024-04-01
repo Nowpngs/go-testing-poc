@@ -2,32 +2,32 @@ package service
 
 import (
 	"context"
-	modal "go-testing-poc/pkg/user"
-	"go-testing-poc/pkg/user/repository"
+	userModal "go-testing-poc/pkg/user"
+	userRepo "go-testing-poc/pkg/user/repository"
 )
 
 type UserService interface {
-	CreateUser(ctx context.Context, user *modal.User) error
-	GetUserList(ctx context.Context, role *modal.Role) ([]*modal.User, error)
-	GetUserById(ctx context.Context, id string) (*modal.User, error)
+	CreateUser(ctx context.Context, user *userModal.User) error
+	GetUserList(ctx context.Context, role *userModal.Role) ([]*userModal.User, error)
+	GetUserById(ctx context.Context, id string) (*userModal.User, error)
 }
 
 type userService struct {
-	userRepo repository.UserRepository
+	userRepo userRepo.UserRepository
 }
 
-func NewUserService(userRepo repository.UserRepository) UserService {
+func NewUserService(userRepo userRepo.UserRepository) UserService {
 	return &userService{userRepo: userRepo}
 }
 
-func (s *userService) CreateUser(ctx context.Context, user *modal.User) error {
+func (s *userService) CreateUser(ctx context.Context, user *userModal.User) error {
 	return s.userRepo.CreateUser(ctx, user)
 }
 
-func (s *userService) GetUserList(ctx context.Context, role *modal.Role) ([]*modal.User, error) {
+func (s *userService) GetUserList(ctx context.Context, role *userModal.Role) ([]*userModal.User, error) {
 	return s.userRepo.GetUserList(ctx, role)
 }
 
-func (s *userService) GetUserById(ctx context.Context, id string) (*modal.User, error) {
+func (s *userService) GetUserById(ctx context.Context, id string) (*userModal.User, error) {
 	return s.userRepo.GetUserById(ctx, id)
 }

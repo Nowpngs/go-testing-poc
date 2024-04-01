@@ -1,8 +1,8 @@
 package user
 
 import (
-	modal "go-testing-poc/pkg/user"
-	"go-testing-poc/pkg/user/service"
+	userModal "go-testing-poc/pkg/user"
+	userService "go-testing-poc/pkg/user/service"
 	"net/http"
 	"strconv"
 
@@ -10,10 +10,10 @@ import (
 )
 
 type UserHandler struct {
-	userService service.UserService
+	userService userService.UserService
 }
 
-func NewUserHandler(userService service.UserService) *UserHandler {
+func NewUserHandler(userService userService.UserService) *UserHandler {
 	return &UserHandler{userService: userService}
 }
 
@@ -22,12 +22,12 @@ func NewUserHandler(userService service.UserService) *UserHandler {
 // @Description Create a new user with the input payload
 // @Tags Users
 // @Accept  json
-// @Param user body modal.User true "User object that needs to be created"
+// @Param user body userModal.User true "User object that needs to be created"
 // @Produce  json
-// @Success 201 {object} modal.User
+// @Success 201 {object} userModal.User
 // @Router /user [post]
 func (h *UserHandler) CreateUserHandler(c *gin.Context) {
-	var newUser modal.User
+	var newUser userModal.User
 	if err := c.ShouldBindJSON(&newUser); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -48,18 +48,18 @@ func (h *UserHandler) CreateUserHandler(c *gin.Context) {
 // @Param role query string false "Role ID"
 // @Produce  json
 // @Tags Users
-// @Success 200 {array} modal.User
+// @Success 200 {array} userModal.User
 // @Router /user [get]
 func (h *UserHandler) GetUserListHandler(c *gin.Context) {
 	roleStr := c.Query("role")
-	var role *modal.Role
+	var role *userModal.Role
 
 	if roleStr != "" {
 		if roleID, err := strconv.Atoi(roleStr); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid role ID"})
 			return
 		} else {
-			role = (*modal.Role)(&roleID)
+			role = (*userModal.Role)(&roleID)
 		}
 	}
 
@@ -78,7 +78,7 @@ func (h *UserHandler) GetUserListHandler(c *gin.Context) {
 // @Param id path string true "User ID"
 // @Produce  json
 // @Tags Users
-// @Success 200 {object} modal.User
+// @Success 200 {object} userModal.User
 // @Router /user/{id} [get]
 func (h *UserHandler) GetUserByIdHandler(c *gin.Context) {
 	id := c.Param("id")
