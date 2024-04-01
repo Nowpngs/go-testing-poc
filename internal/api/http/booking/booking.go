@@ -9,8 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var _ bookingDto.BookingWithUserResponse
-
 type BookingHandler struct {
 	bookingService bookingService.BookingService
 }
@@ -24,16 +22,23 @@ func NewBookingHandler(bookingService bookingService.BookingService) *BookingHan
 // @Description Create a new booking with the input payload
 // @Tags Bookings
 // @Accept  json
-// @Param booking body bookingModal.Booking true "Booking object that needs to be created"
+// @Param booking body bookingDto.BookingCreateRequest true "Booking object that needs to be created"
 // @Produce  json
 // @Success 201 {object} bookingModal.Booking
 // @Router /booking [post]
 func (h *BookingHandler) CreateBookingHandler(c *gin.Context) {
-	var newBooking bookingModal.Booking
-	if err := c.ShouldBindJSON(&newBooking); err != nil {
+	var bookingRequest bookingDto.BookingCreateRequest
+	if err := c.BindJSON(&bookingRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	newBooking := bookingModal.Booking{
+		BookingNumber: bookingRequest.BookingNumber,
+		Status:        bookingRequest.Status,
+		UserID:        bookingRequest.UserID,
+	}
+
 	err := h.bookingService.CreateBooking(c.Request.Context(), &newBooking)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

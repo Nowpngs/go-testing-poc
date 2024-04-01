@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modal.Booking"
+                            "$ref": "#/definitions/dto.BookingCreateRequest"
                         }
                     }
                 ],
@@ -166,6 +166,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.BookingCreateRequest": {
+            "type": "object",
+            "required": [
+                "bookingNumber",
+                "status",
+                "userId"
+            ],
+            "properties": {
+                "bookingNumber": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/modal.Status"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.BookingWithUserResponse": {
             "type": "object",
             "properties": {

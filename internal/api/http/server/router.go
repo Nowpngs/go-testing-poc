@@ -20,7 +20,14 @@ func NewRouter(db *sql.DB, cfg *config.Config) *gin.Engine {
 	gin.SetMode(cfg.GinMode)
 
 	router := gin.Default()
-	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	router.GET("/docs/*any", func(c *gin.Context) {
+		if c.Request.URL.Path == "/docs" {
+			c.Redirect(http.StatusMovedPermanently, "/docs/index.html")
+			return
+		}
+		ginSwagger.WrapHandler(swaggerFiles.Handler)(c)
+	})
 
 	// Init Repositories
 	userRepo := userRepo.NewUserRepository(db)

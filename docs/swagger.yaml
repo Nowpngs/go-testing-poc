@@ -1,5 +1,18 @@
 basePath: /
 definitions:
+  dto.BookingCreateRequest:
+    properties:
+      bookingNumber:
+        type: string
+      status:
+        $ref: '#/definitions/modal.Status'
+      userId:
+        type: integer
+    required:
+    - bookingNumber
+    - status
+    - userId
+    type: object
   dto.BookingWithUserResponse:
     properties:
       booking_number:
@@ -92,7 +105,7 @@ paths:
         name: booking
         required: true
         schema:
-          $ref: '#/definitions/modal.Booking'
+          $ref: '#/definitions/dto.BookingCreateRequest'
       produces:
       - application/json
       responses:
