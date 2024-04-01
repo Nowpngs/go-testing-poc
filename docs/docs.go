@@ -259,9 +259,9 @@ const docTemplate = `{
         "modal.Status": {
             "type": "integer",
             "enum": [
-                0,
                 1,
-                2
+                2,
+                3
             ],
             "x-enum-varnames": [
                 "Pending",

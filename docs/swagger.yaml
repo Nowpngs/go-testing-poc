@@ -62,9 +62,9 @@ definitions:
     - UserRole
   modal.Status:
     enum:
-    - 0
     - 1
     - 2
+    - 3
     type: integer
     x-enum-varnames:
     - Pending

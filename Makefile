@@ -21,7 +21,7 @@ migration_down:
 	@migrate -path database/migration/ -database "postgres://postgres:password@localhost:5432/golang-testing?sslmode=disable" -verbose down
 
 migration_fix:
-	@echo "Force migration to version 000001"
+	@echo "Force migration to version 000002"
 	@migrate -path database/migration/ -database "postgres://postgres:password@localhost:5432/golang-testing?sslmode=disable" force 000001
 
 	
